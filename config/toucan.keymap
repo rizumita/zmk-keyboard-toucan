@@ -128,9 +128,9 @@
         adj {
             display-name = "ADJ";
             bindings = <
-                &kp TAB   &trans &trans &trans &trans &trans   &trans &kp C_PLAY_PAUSE &kp C_VOL_DN &kp C_VOL_UP &kp C_PREV &kp C_NEXT
-                &kp LCTRL &trans &trans &trans &trans &trans   &trans &trans           &trans       &trans       &trans     &kp C_MUTE
-                &kp LSHFT &trans &trans &trans &trans &trans   &trans &trans           &trans       &trans       &trans     &trans
+                &kp TAB   &trans &trans &trans &trans &trans   &trans &kp C_VOL_DN &kp C_MUTE &kp C_VOL_UP &trans &trans
+                &kp LCTRL &trans &trans &trans &trans &trans   &trans &kp C_PREV   &kp C_PLAY_PAUSE &kp C_NEXT &trans &trans
+                &kp LSHFT &trans &trans &trans &trans &trans   &trans &trans       &trans       &trans     &trans &trans
                                    &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &kp RET &meh_f19 0 F19
             >;
         };
