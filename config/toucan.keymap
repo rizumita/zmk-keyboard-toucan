@@ -109,7 +109,7 @@
             display-name = "NAV";
             bindings = <
                 &kp TAB     &kp N1          &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-                &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &trans &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans
+                &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4  &trans &kp LEFT &kp UP &kp DOWN &kp RIGHT &trans
                 &kp LSHFT   &studio_unlock  &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
                                                 &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &ret_layer 1 RET &meh_f19 0 F19
             >;
