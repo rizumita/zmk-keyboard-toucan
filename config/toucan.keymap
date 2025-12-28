@@ -108,7 +108,7 @@
         nav {
             display-name = "NAV";
             bindings = <
-                &kp TAB     &kp N1          &kp N2        &kp N3       &kp N4        &kp N5           &kp N6       &kp N7   &kp N8   &kp N9    &kp N0    &kp BSPC
+                &kp ESC     &kp N1          &kp N2        &kp N3       &kp N4        &kp N5           &kp N6       &kp N7   &kp N8   &kp N9    &kp N0    &kp BSPC
                 &kp LCTRL   &kp LC(LEFT)    &kp LC(RIGHT) &kp LG(LEFT) &kp LG(RIGHT) &trans           &kp HOME     &kp LEFT &kp UP   &kp DOWN  &kp RIGHT &kp END
                 &kp LSHFT   &studio_unlock  &trans        &trans       &trans        &trans           &trans       &trans   &trans   &trans    &trans    &trans
                                                 &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &ret_layer 1 RET &meh_f19 0 F19
