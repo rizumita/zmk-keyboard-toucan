@@ -158,7 +158,7 @@
         mouse {
             display-name = "MOUSE";
             bindings = <
-                &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &tog SCROLL   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &mkp RCLK &mkp LCLK &mouse_exit_scroll SCROLL MOUSE   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
                                &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &mouse_exit_nav NAV MOUSE &meh_f19 0 F19
