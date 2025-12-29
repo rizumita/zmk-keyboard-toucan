@@ -9,6 +9,7 @@
 #define SYM  2
 #define ADJ  3
 #define MOUSE 4
+#define SCROLL 5
 
 / {
     macros {
@@ -45,6 +46,15 @@
             flavor = "balanced";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
+            bindings = <&mo>, <&tog>;
+        };
+
+        mouse_exit_scroll: mouse_exit_scroll {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <150>;
+            quick-tap-ms = <120>;
             bindings = <&mo>, <&tog>;
         };
         
@@ -149,9 +159,19 @@
             display-name = "MOUSE";
             bindings = <
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &mkp RCLK &mkp LCLK &tog MOUSE   &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &mkp RCLK &mkp LCLK &mouse_exit_scroll SCROLL MOUSE   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
                                &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &mouse_exit_nav NAV MOUSE &meh_f19 0 F19
+            >;
+        };
+
+        scroll {
+            display-name = "SCROLL";
+            bindings = <
+                &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                               &trans &trans &trans   &trans &trans &trans
             >;
         };
         extra_1 {
