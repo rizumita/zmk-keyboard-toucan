@@ -119,8 +119,8 @@
             display-name = "SYM";
             bindings = <
                 &kp TAB   &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp BSPC
-                &kp LCTRL &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS &kp ASTRK &kp LPAR &kp RPAR &kp BSLH
-                &kp LSHFT &kp GRAVE &kp LBKT &kp RBKT &kp EQUAL &kp FSLH   &kp TILDE &kp LBRC &kp RBRC &kp PLUS &kp QMARK &kp RSHFT
+                &kp LCTRL &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS &kp ASTRK &kp LPAR &kp RPAR &kp EQUAL
+                &kp LSHFT &kp GRAVE &kp LBKT &kp RBKT &kp FSLH &kp BSLH   &kp TILDE &kp LBRC &kp RBRC &kp QMARK &kp PIPE &kp PLUS
                                           &trans &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &kp RET &meh_f19 0 F19
             >;
         };
