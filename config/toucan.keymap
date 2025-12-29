@@ -46,7 +46,7 @@
             flavor = "balanced";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
-            bindings = <&mo>, <&tog>;
+            bindings = <&mo>, <&to>;
         };
 
         mouse_exit_scroll: mouse_exit_scroll {
@@ -55,7 +55,7 @@
             flavor = "balanced";
             tapping-term-ms = <150>;
             quick-tap-ms = <120>;
-            bindings = <&mo>, <&tog>;
+            bindings = <&mo>, <&to>;
         };
         
         space_layer: space_layer {
@@ -159,9 +159,9 @@
             display-name = "MOUSE";
             bindings = <
                 &trans &trans &trans &trans &trans &tog SCROLL   &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &mkp RCLK &mkp LCLK &mouse_exit_scroll SCROLL MOUSE   &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &mkp RCLK &mkp LCLK &mouse_exit_scroll SCROLL BASE   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
-                               &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &mouse_exit_nav NAV MOUSE &meh_f19 0 F19
+                               &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &mouse_exit_nav NAV BASE &meh_f19 0 F19
             >;
         };
 
