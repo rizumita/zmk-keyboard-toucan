@@ -90,7 +90,8 @@
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
+            quick-tap-ms = <0>;
+            hold-while-undecided;
             bindings = <&meh>, <&kp>;
         };
         
@@ -99,7 +100,8 @@
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
+            quick-tap-ms = <0>;
+            hold-while-undecided;
             bindings = <&hyper>, <&kp>;
         };
     };
