@@ -34,9 +34,9 @@
         ret_layer: ret_layer {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
+            quick-tap-ms = <0>;
             bindings = <&mo>, <&kp>;
         };
 
@@ -61,16 +61,16 @@
         space_layer: space_layer {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
+            quick-tap-ms = <0>;
             bindings = <&mo>, <&kp>;
         };
         
         lgui_lang: lgui_lang {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
             bindings = <&kp>, <&kp>;
@@ -79,7 +79,7 @@
         ralt_lang: ralt_lang {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
             bindings = <&kp>, <&kp>;
@@ -88,7 +88,7 @@
         meh_f19: meh_f19 {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
             bindings = <&meh>, <&kp>;
@@ -97,7 +97,7 @@
         hyper_f16: hyper_f16 {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <200>;
             quick-tap-ms = <150>;
             bindings = <&hyper>, <&kp>;
