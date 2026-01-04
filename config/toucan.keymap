@@ -112,6 +112,16 @@
             tapping-term-ms = <200>;
             bindings = <&kp>, <&kp>;
         };
+
+        esc_shift: esc_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <0>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <0>;
+            hold-while-undecided;
+            bindings = <&kp LSHFT>, <&kp ESC>;
+        };
     };
 
     conditional_layers {
@@ -130,7 +140,7 @@
             bindings = <
                 &kp TAB   &kp SQT &kp COMMA &kp DOT &kp P &kp Y   &kp F &kp G &kp C &kp R &kp L &kp BSPC
                 &kp LCTRL &kp A   &kp O     &kp E   &kp U &kp I   &kp D &kp H &kp T &kp N &kp S &kp MINUS
-                &kp LSHFT &semi_colon COLON SEMI &kp Q    &kp J   &kp K &kp X   &kp B &kp M &kp W &kp V &kp Z &kp ESC
+                &kp LSHFT &semi_colon COLON SEMI &kp Q    &kp J   &kp K &kp X   &kp B &kp M &kp W &kp V &kp Z &esc_shift
                                 &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &ret_layer 1 RET &meh_f19 0 F19
             >;
         };
