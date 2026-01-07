@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lvgl.h>
+#include <zmk/activity.h>
 #include <zmk/endpoints.h>
 
 #define SCREEN_WIDTH 144
@@ -18,7 +19,7 @@ struct status_state {
     uint8_t battery_p;
     bool charging;
     bool charging_p;
-    bool idle;
+    enum zmk_activity_state activity_state;
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     struct zmk_endpoint_instance selected_endpoint;
     int active_profile_index;

@@ -40,14 +40,23 @@ static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
  * Draw buffers
  **/
 
-static void draw_idle_status(lv_obj_t *canvas, const struct status_state *state) {
-    if (!state->idle) {
-        return;
+static void draw_activity_status(lv_obj_t *canvas, const struct status_state *state) {
+    const char *text = NULL;
+    switch (state->activity_state) {
+        case ZMK_ACTIVITY_IDLE:
+            text = "IDLE";
+            break;
+        case ZMK_ACTIVITY_SLEEP:
+            text = "SLEEP";
+            break;
+        case ZMK_ACTIVITY_ACTIVE:
+        default:
+            return;
     }
 
     lv_draw_label_dsc_t label_dsc;
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &quinquefive_8, LV_TEXT_ALIGN_CENTER);
-    lv_canvas_draw_text(canvas, 0, 2, SCREEN_WIDTH, &label_dsc, "IDLE");
+    lv_canvas_draw_text(canvas, 0, 2, SCREEN_WIDTH, &label_dsc, text);
 }
 
 static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
@@ -60,7 +69,7 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     draw_profile_status(canvas, state);
     draw_battery_status(canvas, state);
     draw_battery_peripheral_status(canvas, state);
-    draw_idle_status(canvas, state);
+    draw_activity_status(canvas, state);
 }
 
 /**
@@ -207,26 +216,22 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_ble_active_profile_changed);
  * Activity (idle) status
  **/
 
-static void set_activity_status(struct zmk_widget_screen *widget, bool idle) {
-    widget->state.idle = idle;
+static void set_activity_status(struct zmk_widget_screen *widget, enum zmk_activity_state state) {
+    widget->state.activity_state = state;
     draw_top(widget->obj, widget->cbuf, &widget->state);
 }
 
-static void activity_status_update_cb(bool idle) {
+static void activity_status_update_cb(enum zmk_activity_state state) {
     struct zmk_widget_screen *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_activity_status(widget, idle); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_activity_status(widget, state); }
 }
 
-static bool activity_status_get_state(const zmk_event_t *eh) {
+static enum zmk_activity_state activity_status_get_state(const zmk_event_t *eh) {
     const struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
-    if (ev == NULL) {
-        return false;
-    }
-
-    return ev->state != ZMK_ACTIVITY_ACTIVE;
+    return (ev != NULL) ? ev->state : zmk_activity_get_state();
 }
 
-ZMK_DISPLAY_WIDGET_LISTENER(widget_activity_status, bool, activity_status_update_cb,
+ZMK_DISPLAY_WIDGET_LISTENER(widget_activity_status, enum zmk_activity_state, activity_status_update_cb,
                             activity_status_get_state);
 ZMK_SUBSCRIPTION(widget_activity_status, zmk_activity_state_changed);
 
@@ -253,4 +258,3 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
 }
 
 lv_obj_t *zmk_widget_screen_obj(struct zmk_widget_screen *widget) { return widget->obj; }
-
