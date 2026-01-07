@@ -63,10 +63,11 @@
         dr-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH)>;
         sensitivity = "2x";
         /* Edge sensitivity: lower => easier to detect touches near the perimeter */
-        x-axis-z-min = <2>;
-        y-axis-z-min = <2>;
+        x-axis-z-min = <5>;
+        y-axis-z-min = <4>;
         x-invert;
         no-secondary-tap;
+        sleep;
 	    //sleep;
     };
 };

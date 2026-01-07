@@ -1,0 +1,7 @@
+# Local tool/agent state
+.serena/
+
+# macOS
+.DS_Store
+
+
