@@ -4,17 +4,12 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: petejohanson
-      url-base: https://github.com/petejohanson/
     - name: caksoylar
       url-base: https://github.com/caksoylar
   projects:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
-    - name: cirque-input-module
-      remote: petejohanson
-      revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
       revision: main
