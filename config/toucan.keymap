@@ -102,6 +102,15 @@
             bindings = <&kp>, <&kp>;
         };
 
+        scroll_exit_nav: scroll_exit_nav {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <150>;
+            bindings = <&mo>, <&tog>;
+        };
+
         esc_shift: esc_shift {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -137,8 +146,8 @@
         nav {
             display-name = "NAV";
             bindings = <
-                &kp ESC     &kp LC(LEFT)    &kp LC(RIGHT) &kp LG(LEFT) &kp LG(RIGHT) &tog SCROLL      &none        &none    &none    &none     &none     &kp BSPC
-                &kp LCTRL   &none           &none         &mkp RCLK    &mkp LCLK     &mo SCROLL       &kp HOME     &kp LEFT &kp UP   &kp DOWN  &kp RIGHT &kp END
+                &kp ESC     &kp LC(LEFT)    &kp LC(RIGHT) &kp LG(LEFT) &kp LG(RIGHT) &none            &none        &none    &none    &none     &none     &kp BSPC
+                &kp LCTRL   &none           &none         &mkp RCLK    &mkp LCLK     &tog SCROLL      &kp HOME     &kp LEFT &kp UP   &kp DOWN  &kp RIGHT &kp END
                 &kp LSHFT   &studio_unlock  &trans        &trans       &trans        &trans           &trans       &trans   &trans   &trans    &trans    &trans
                                                 &kp LALT          &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &ret_layer 1 RET &meh_f19 0 F19
             >;
@@ -174,7 +183,7 @@
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
-                               &trans &trans &trans   &trans &trans &trans
+                               &trans &trans &trans   &trans &scroll_exit_nav NAV SCROLL &trans
             >;
         };
         extra_1 {
