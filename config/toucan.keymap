@@ -8,7 +8,6 @@
 #define NAV  1
 #define SYM  2
 #define ADJ  3
-#define MOUSE 4
 #define SCROLL 5
 
 / {
@@ -40,24 +39,6 @@
             bindings = <&mo>, <&kp>;
         };
 
-        mouse_exit_nav: mouse_exit_nav {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <150>;
-            bindings = <&mo>, <&to>;
-        };
-
-        mouse_exit_scroll: mouse_exit_scroll {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <150>;
-            quick-tap-ms = <120>;
-            bindings = <&mo>, <&kp>;
-        };
-        
         space_layer: space_layer {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -156,8 +137,8 @@
         nav {
             display-name = "NAV";
             bindings = <
-                &kp ESC     &none           &none         &none        &none         &none            &none        &none    &none    &none     &none     &kp BSPC
-                &kp LCTRL   &kp LC(LEFT)    &kp LC(RIGHT) &kp LG(LEFT) &kp LG(RIGHT) &tog MOUSE       &kp HOME     &kp LEFT &kp UP   &kp DOWN  &kp RIGHT &kp END
+                &kp ESC     &kp LC(LEFT)    &kp LC(RIGHT) &kp LG(LEFT) &kp LG(RIGHT) &tog SCROLL      &none        &none    &none    &none     &none     &kp BSPC
+                &kp LCTRL   &none           &none         &mkp RCLK    &mkp LCLK     &mo SCROLL       &kp HOME     &kp LEFT &kp UP   &kp DOWN  &kp RIGHT &kp END
                 &kp LSHFT   &studio_unlock  &trans        &trans       &trans        &trans           &trans       &trans   &trans   &trans    &trans    &trans
                                                 &kp LALT          &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &ret_layer 1 RET &meh_f19 0 F19
             >;
@@ -184,13 +165,7 @@
         };
 
         mouse {
-            display-name = "MOUSE";
-            bindings = <
-                &trans &trans &trans &trans &trans &tog SCROLL   &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &mkp RCLK &mkp LCLK &mouse_exit_scroll SCROLL I   &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
-                               &hyper_f16 0 F16 &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &mouse_exit_nav NAV BASE &meh_f19 0 F19
-            >;
+            status = "reserved";
         };
 
         scroll {
