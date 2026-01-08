@@ -236,41 +236,50 @@ static void pinnacle_report_data(const struct device *dev) {
     struct pinnacle_data *data = dev->data;
     uint8_t packet[3];
     int ret;
-    /* After waking from sleep, DR can assert before SW_DR is set. Retry briefly so the first
-     * touch/motion isn't lost (otherwise it often takes a second gesture to get a packet).
-     */
-    for (int attempt = 0; attempt < 5; attempt++) {
-        ret = pinnacle_seq_read(dev, PINNACLE_STATUS1, packet, 1);
-        if (ret < 0) {
-            LOG_ERR("read status: %d", ret);
-            return;
-        }
-
-        if (packet[0] != 0xFF && (packet[0] & PINNACLE_STATUS1_SW_DR)) {
-            break;
-        }
-
-        if (attempt < 4) {
-            k_usleep(500);
-        }
+    ret = pinnacle_seq_read(dev, PINNACLE_STATUS1, packet, 1);
+    if (ret < 0) {
+        LOG_ERR("read status: %d", ret);
+        return;
     }
 
     LOG_HEXDUMP_DBG(packet, 1, "Pinnacle Status1");
 
     // Ignore 0xFF packets that indicate communcation failure, or if SW_DR isn't asserted
     if (packet[0] == 0xFF || !(packet[0] & PINNACLE_STATUS1_SW_DR)) {
-        /* If we were invoked by a DR interrupt, clear status to re-arm the line even if SW_DR
-         * isn't set yet. Without this, DR can remain asserted and we never see the next edge.
+        /* After waking from sleep, DR can assert before SW_DR is set (and sometimes before SPI
+         * comms are stable). Retry a few times without blocking the system workqueue so the first
+         * swipe doesn't feel like it's "missing the beginning".
+         */
+#define PINNACLE_SW_DR_RETRY_MAX 10
+#define PINNACLE_SW_DR_RETRY_DELAY_MS 3
+        if (data->in_int && data->sw_dr_retry < PINNACLE_SW_DR_RETRY_MAX) {
+            data->sw_dr_retry++;
+            (void)k_work_reschedule(&data->work, K_MSEC(PINNACLE_SW_DR_RETRY_DELAY_MS));
+            return;
+        }
+#undef PINNACLE_SW_DR_RETRY_MAX
+#undef PINNACLE_SW_DR_RETRY_DELAY_MS
+
+        /* Give up. If we were invoked by a DR interrupt, clear status to re-arm the line even if
+         * SW_DR isn't set yet. Without this, DR can remain asserted and we never see the next edge.
          */
         if (data->in_int) {
             (void)pinnacle_clear_status(dev);
             data->in_int = false;
         }
+        data->sw_dr_retry = 0;
         return;
     }
+
+    data->sw_dr_retry = 0;
     ret = pinnacle_seq_read(dev, PINNACLE_2_2_PACKET0, packet, 3);
     if (ret < 0) {
         LOG_ERR("read packet: %d", ret);
+        /* Treat the first read after wake as potentially transient. */
+        if (data->in_int && data->sw_dr_retry < 3) {
+            data->sw_dr_retry++;
+            (void)k_work_reschedule(&data->work, K_MSEC(2));
+        }
         return;
     }
 
@@ -313,7 +322,7 @@ static void pinnacle_report_data(const struct device *dev) {
 }
 
 static void pinnacle_work_cb(struct k_work *work) {
-    struct pinnacle_data *data = CONTAINER_OF(work, struct pinnacle_data, work);
+    struct pinnacle_data *data = CONTAINER_OF(work, struct pinnacle_data, work.work);
     pinnacle_report_data(data->dev);
 }
 
@@ -322,7 +331,8 @@ static void pinnacle_gpio_cb(const struct device *port, struct gpio_callback *cb
 
     LOG_DBG("HW DR asserted");
     data->in_int = true;
-    k_work_submit(&data->work);
+    data->sw_dr_retry = 0;
+    (void)k_work_reschedule(&data->work, K_NO_WAIT);
 }
 
 static int pinnacle_adc_sensitivity_reg_value(enum pinnacle_sensitivity sensitivity) {
@@ -557,7 +567,8 @@ static int pinnacle_init(const struct device *dev) {
         return -EIO;
     }
 
-    k_work_init(&data->work, pinnacle_work_cb);
+    data->sw_dr_retry = 0;
+    k_work_init_delayable(&data->work, pinnacle_work_cb);
 
     pinnacle_write(dev, PINNACLE_FEED_CFG1, feed_cfg1);
 

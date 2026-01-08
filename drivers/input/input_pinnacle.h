@@ -4,6 +4,7 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/drivers/spi.h>
+#include <zephyr/kernel.h>
 
 #define PINNACLE_READ 0xA0
 #define PINNACLE_WRITE 0x80
@@ -78,7 +79,8 @@ struct pinnacle_data {
     bool in_int;
     const struct device *dev;
     struct gpio_callback gpio_cb;
-    struct k_work work;
+    struct k_work_delayable work;
+    uint8_t sw_dr_retry;
 };
 
 enum pinnacle_sensitivity {
