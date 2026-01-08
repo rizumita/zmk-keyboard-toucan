@@ -120,6 +120,16 @@
             hold-while-undecided;
             bindings = <&kp>, <&kp>;
         };
+
+        plus_rsft: plus_rsft {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <0>;
+            hold-while-undecided;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     conditional_layers {
@@ -158,7 +168,7 @@
             bindings = <
                 &kp TAB   &kp F1 &kp F2 &kp F3 &kp F4 &kp F5   &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp BSPC
                 &kp LCTRL &num_sym LS(N1) N1 &num_sym LS(N2) N2 &num_sym LS(N3) N3 &num_sym LS(N4) N4 &num_sym LS(N5) N5   &num_sym LS(N6) N6 &num_sym LS(N7) N7 &num_sym LS(N8) N8 &num_sym LS(N9) N9 &num_sym LS(N0) N0 &kp EQUAL
-                &kp LSHFT &kp GRAVE &kp LBKT &kp RBKT &kp FSLH &kp BSLH   &kp TILDE &kp LBRC &kp RBRC &kp QMARK &kp PIPE &kp PLUS
+                &kp LSHFT &kp GRAVE &kp LBKT &kp RBKT &kp FSLH &kp BSLH   &kp TILDE &kp LBRC &kp RBRC &kp QMARK &kp PIPE &plus_rsft RSHFT PLUS
                                           &trans &space_layer 2 SPACE &lgui_lang LGUI LANG2   &ralt_lang RALT LANG1 &kp RET &meh_f19 0 F19
             >;
         };
