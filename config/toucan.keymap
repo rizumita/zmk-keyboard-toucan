@@ -79,9 +79,9 @@
         hyper_f16: hyper_f16 {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <250>;
+            quick-tap-ms = <200>;
             hold-while-undecided;
             bindings = <&hyper>, <&kp>;
         };
