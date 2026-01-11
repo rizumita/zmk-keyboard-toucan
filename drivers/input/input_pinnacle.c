@@ -287,6 +287,7 @@ static void pinnacle_report_data(const struct device *dev) {
 
     uint8_t btn = packet[0] &
                   (PINNACLE_PACKET0_BTN_PRIM | PINNACLE_PACKET0_BTN_SEC | PINNACLE_PACKET0_BTN_AUX);
+    const bool btn_changed = btn != data->btn_cache;
 
     int8_t dx = (int8_t)packet[1];
     int8_t dy = (int8_t)packet[2];
@@ -296,6 +297,16 @@ static void pinnacle_report_data(const struct device *dev) {
     }
     if (packet[0] & PINNACLE_PACKET0_Y_SIGN) {
         WRITE_BIT(dy, 7, 1);
+    }
+
+    if (IS_ENABLED(CONFIG_INPUT_PINNACLE_DEBUG_DUMP) && (btn || btn_changed)) {
+        uint8_t regs[PINNACLE_REG_COUNT];
+        const int dump_ret = pinnacle_seq_read(dev, 0x00, regs, sizeof(regs));
+        if (dump_ret < 0) {
+            LOG_DBG("Pinnacle reg dump read failed: %d", dump_ret);
+        } else {
+            LOG_HEXDUMP_DBG(regs, sizeof(regs), "Pinnacle regs 0x00..0x17");
+        }
     }
 
     if (data->in_int) {
