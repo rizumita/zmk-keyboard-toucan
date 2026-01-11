@@ -17,14 +17,6 @@ config INPUT_PINNACLE_INIT_PRIORITY
     int "Cirque Pinnacle initialization priority"
     default INPUT_INIT_PRIORITY
 
-config INPUT_PINNACLE_DEBUG_DUMP
-    bool "Dump Pinnacle register snapshots (debug)"
-    default n
-    help
-      Enable verbose DEBUG-level hexdumps of Pinnacle registers to help reverse engineer
-      tap/gesture behavior. This is intentionally very chatty and should be used only for
-      debugging.
-
 if ZMK_MOUSE
 
 config ZMK_INPUT_PINNACLE_IDLE_SLEEPER
