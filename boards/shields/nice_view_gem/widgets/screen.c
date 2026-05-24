@@ -29,6 +29,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "output.h"
 #include "profile.h"
 #include "screen.h"
+#include "sleep.h"
 
 struct connection_status_state {
     bool connected;
@@ -62,6 +63,11 @@ static void draw_activity_status(lv_obj_t *canvas, const struct status_state *st
 static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
     lv_obj_t *canvas = lv_obj_get_child(widget, 0);
     fill_background(canvas);
+
+    if (is_sleep_screen_active()) {
+        draw_sleep_screen(canvas);
+        return;
+    }
 
     // Draw widgets
     draw_output_status(canvas, state);
@@ -213,27 +219,52 @@ ZMK_SUBSCRIPTION(widget_output_status, zmk_ble_active_profile_changed);
 #endif
 
 /**
- * Activity (idle) status
+ * Activity state handling for sleep screen
  **/
 
-static void set_activity_status(struct zmk_widget_screen *widget, enum zmk_activity_state state) {
-    widget->state.activity_state = state;
-    draw_top(widget->obj, widget->cbuf, &widget->state);
-}
-
-static void activity_status_update_cb(enum zmk_activity_state state) {
+static void force_redraw_all_widgets(void) {
     struct zmk_widget_screen *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_activity_status(widget, state); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        widget->state.activity_state = zmk_activity_get_state();
+        draw_top(widget->obj, widget->cbuf, &widget->state);
+    }
 }
 
-static enum zmk_activity_state activity_status_get_state(const zmk_event_t *eh) {
-    const struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
-    return (ev != NULL) ? ev->state : zmk_activity_get_state();
+static int display_activity_event_handler(const zmk_event_t *eh) {
+    struct zmk_activity_state_changed *ev = as_zmk_activity_state_changed(eh);
+    if (ev == NULL) {
+        return -ENOTSUP;
+    }
+
+    struct zmk_widget_screen *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        widget->state.activity_state = ev->state;
+    }
+
+    switch (ev->state) {
+    case ZMK_ACTIVITY_ACTIVE:
+        set_sleep_screen_active(false);
+        force_redraw_all_widgets();
+        break;
+    case ZMK_ACTIVITY_SLEEP:
+        set_sleep_screen_active(true);
+        force_redraw_all_widgets();
+        // Force LVGL to process pending updates and flush to display hardware
+        // before the CPU enters deep sleep
+        lv_task_handler();
+        lv_refr_now(NULL);
+        break;
+    case ZMK_ACTIVITY_IDLE:
+        force_redraw_all_widgets();
+        break;
+    default:
+        break;
+    }
+    return 0;
 }
 
-ZMK_DISPLAY_WIDGET_LISTENER(widget_activity_status, enum zmk_activity_state, activity_status_update_cb,
-                            activity_status_get_state);
-ZMK_SUBSCRIPTION(widget_activity_status, zmk_activity_state_changed);
+ZMK_LISTENER(nice_view_gem_display, display_activity_event_handler);
+ZMK_SUBSCRIPTION(nice_view_gem_display, zmk_activity_state_changed);
 
 /**
  * Initialization
@@ -252,7 +283,6 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget_battery_peripheral_status_init();
     widget_layer_status_init();
     widget_output_status_init();
-    widget_activity_status_init();
 
     return 0;
 }
